@@ -1,0 +1,21 @@
+﻿version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile  # Nome do seu Dockerfile
+    ports:
+      - "8080:8080"  # Mapeia a porta do host para a porta do contêiner
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production  # Define a variável de ambiente ASP.NET Core
+      - Redis_Connection=redis:6379  # Define a variável de ambiente para a conexão do Redis
+    volumes:
+      - .:/app  # Mapeia o diretório atual para /app no contêiner
+    depends_on:
+      - redis  # Dependência do serviço Redis
+
+  redis:
+    image: redis:latest  # Imagem do Redis a ser utilizada
+    ports:
+      - "6379:6379"  # Mapeia a porta do host para a porta do contêiner do Redis
